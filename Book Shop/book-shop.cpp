@@ -23,21 +23,33 @@ class BookShop {
 double BookShop::revenue;
 int BookShop::bookSold;
 
-class Admin : public BookShop {
+class AdminCredentials {
+	public :
+		AdminCredentials(char name[MAX_LENGTH], int pin) : name{name}, pin{pin}{}
+		virtual void updateName(char name[MAX_LENGTH]) = 0;
+		virtual void updatePin(int x) = 0;
+	protected :
+		char *name;
+		int pin;
+};
+
+class Admin : public AdminCredentials, public BookShop {
 	public :
 		Admin() = delete;
-		Admin(char name[MAX_LENGTH],int pin) : name{name}, pin{pin}{}
+		Admin(char name[MAX_LENGTH],int pin) : AdminCredentials(name, pin){}
 		~Admin() {name = nullptr; pin = 0;}
 
 		void AdminMenu();
-		
+		void updateName(char[]);
+		void updatePin(int);
+
 		static void viewBookShopAccount();
 
 		int getPin() const {return pin;};
 		void setPin(int pin) {this->pin = pin;}
-	private : 
-		int pin;
-		char* name;
+	// private : 
+	// 	int pin;
+	// 	char* name;
 };
 
 class Book : public BookShop {
@@ -224,15 +236,24 @@ void Book::printBooks(const vector<Book> &books) {
 	}
 }
 
+void Admin::updateName(char name[]) {
+	this->name = name;
+}
+
+void Admin::updatePin(int pin) {
+	this->pin = pin;
+}
+
 void Admin::AdminMenu() {
 	int choice{0};
 	bool inLoop{true};
 	while(inLoop) {
 		cout << "\n--------------------------------------------------------\n";
-		cout << "\t     !!!! [" << name << "] !!!!" << endl; 
+		cout << "\t     !!!! [" << this->name << "] !!!!" << endl; 
 		cout << "\n\t\t!!!! ADMIN MENU !!!!\n" << endl
 			 << "1. Show Book Shop Account Details" << endl
 			 << "2. Change Admin Password" << endl
+			 << "3. Change Admin Name" << endl
 			 << "0. Exit from Admin Menu" << endl;
 		cout << "\n--------------------------------------------------------\n";
 		cout <<"Enter your Choice --> ";
@@ -246,7 +267,15 @@ void Admin::AdminMenu() {
 				int x;
 				cout << "Enter new password : ";
 				cin >> x;
-				this->setPin(x);
+				this->updatePin(x);
+			}
+				break;
+			case 3: {
+				cin.ignore();
+				char newName[MAX_LENGTH];
+				cout << "Enter new name : ";
+				cin.getline(newName,MAX_LENGTH);
+				this->updateName(newName);
 			}
 				break;
 			case 0:
