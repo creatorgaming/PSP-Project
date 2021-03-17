@@ -14,6 +14,7 @@ class BookShop {
 		}
 		static double getRevenue(){return revenue;}
 		static int getBookSold(){return bookSold;}
+
 	private :
 		static double revenue;
 		static int bookSold;
@@ -24,8 +25,12 @@ int BookShop::bookSold;
 
 class Admin : public BookShop {
 	public :
+		Admin() = delete;
 		Admin(char name[MAX_LENGTH],int pin) : name{name}, pin{pin}{}
+		~Admin() {name = nullptr; pin = 0;}
+
 		void AdminMenu();
+		
 		static void viewBookShopAccount();
 
 		int getPin() const {return pin;};
@@ -39,11 +44,12 @@ class Book : public BookShop {
 	public:	
 		Book() : author{new char[MAX_LENGTH]}, title{new char[MAX_LENGTH]}, publisher{new char[MAX_LENGTH]}{}
 		Book(char* title, char* author, char* publisher, double price, int stock) : title{title}, author{author}, publisher{publisher}, price{price}, stock{stock}{}
-		
-		void feedData();
-		void editData();
+
+		void enterBooks();
+		void editBook();
 		void buyBook();
 		void showData() const;
+
 		static void printBooks(const vector<Book>&);
 		static int search(const vector<Book>&,char*,char*);
 		static bool deleteBook(vector<Book>&,int);
@@ -96,7 +102,7 @@ int Book::search( const vector<Book>& books, char* tbuy,char* abuy)	{
 	return -1;	
 }
 
-void Book::feedData()	{
+void Book::enterBooks()	{
 	cin.ignore();
 	cout<<"Enter Title Name: ";       
 	cin.getline(this->title,MAX_LENGTH);
@@ -110,7 +116,7 @@ void Book::feedData()	{
 	cin>>this->stock;   
 }
 
-void Book::editData()	{
+void Book::editBook()	{
 	int choice;
 	cout << "\n--------------------------------------------------------\n";
 	cout << "Which Field you want to edit :- "
@@ -348,7 +354,7 @@ int main()	{
                 cin.getline(authorbuy,MAX_LENGTH);
 				int BookIndex = Book::search(B,titlebuy,authorbuy);
 				if(BookIndex != -1) 
-					B[BookIndex].editData();
+					B[BookIndex].editBook();
 				else 
 					cout<<"\n!! This Book is Not in our RECORD !!";	
 				break;
