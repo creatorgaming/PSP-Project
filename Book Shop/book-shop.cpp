@@ -25,31 +25,29 @@ int BookShop::bookSold;
 
 class AdminCredentials {
 	public :
-		AdminCredentials(char name[MAX_LENGTH], int pin) : name{name}, pin{pin}{}
-		virtual void updateName(char name[MAX_LENGTH]) = 0;
+		AdminCredentials(string name, int pin) : name{name}, pin{pin}{}
+		virtual void updateName(string name) = 0;
 		virtual void updatePin(int x) = 0;
 	protected :
-		char *name;
+		string name;
 		int pin;
 };
 
 class Admin : public AdminCredentials, public BookShop {
 	public :
 		Admin() = delete;
-		Admin(char name[MAX_LENGTH],int pin) : AdminCredentials(name, pin){}
+		Admin(string name,int pin) : AdminCredentials(name, pin){}
 		~Admin() {name = nullptr; pin = 0;}
 
 		void AdminMenu();
-		void updateName(char[]);
+		void updateName(string);
 		void updatePin(int);
 
 		static void viewBookShopAccount();
 
-		int getPin() const {return pin;};
+		string getName() const {return this->name;}
+		int getPin() const {return this->pin;};
 		void setPin(int pin) {this->pin = pin;}
-	// private : 
-	// 	int pin;
-	// 	char* name;
 };
 
 class Book : public BookShop {
@@ -236,7 +234,7 @@ void Book::printBooks(const vector<Book> &books) {
 	}
 }
 
-void Admin::updateName(char name[]) {
+void Admin::updateName(string name) {
 	this->name = name;
 }
 
