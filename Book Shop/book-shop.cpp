@@ -1,4 +1,3 @@
-// SOLVE ADMIN NAME CHANGE ERROR
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
