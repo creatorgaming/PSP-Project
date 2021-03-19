@@ -12,8 +12,8 @@ class BookShop {
 			BookShop::revenue += rev;
 			BookShop::bookSold += bS;
 		}
-		static double getRevenue(){return revenue;}
-		static int getBookSold(){return bookSold;}
+		static const double getRevenue(){return revenue;}
+		static const int getBookSold(){return bookSold;}
 
 	private :
 		static double revenue;
@@ -45,8 +45,8 @@ class Admin : public AdminCredentials, public BookShop {
 
 		static void viewBookShopAccount();
 
-		string getName() const {return this->name;}
-		int getPin() const {return this->pin;};
+		string const getName() const {return this->name;}
+		int const getPin() const {return this->pin;};
 		void setPin(int pin) {this->pin = pin;}
 };
 
@@ -67,11 +67,11 @@ class Book : public BookShop {
 		friend ostream& operator << (ostream&,const Book&);
 		friend istream& operator >> (istream&,Book&);
 
-		char* getTitle() {return title;}
-		char* getAuthor() {return author;}
-		char* getPublisher() {return publisher;}
-		double getPrice() {return price;}
-		int getStock() {return stock;}
+		const char* getTitle() {return title;}
+		const char* getAuthor() {return author;}
+		const char* getPublisher() {return publisher;}
+		const double getPrice() {return price;}
+		const int getStock() {return stock;}
 	private:
 		char *author,*title,*publisher;
 		double price;
