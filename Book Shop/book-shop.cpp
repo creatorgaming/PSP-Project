@@ -4,10 +4,14 @@
 #include <vector>
 using namespace std;
 
-#define MAX_LENGTH 100
+// Maximum length of different strings that we can input in the book shop
+// Application of Macro in C++
+#define MAX_LENGTH 1000	
 
+// Main Parent Class in Book Shop that stores all the important details realted to all the books and revenue
 class BookShop {
 	public :
+	// Application of static member function variable
 		static void updateBookShop(double rev, int bS) {
 			BookShop::revenue += rev;
 			BookShop::bookSold += bS;
@@ -16,13 +20,16 @@ class BookShop {
 		static const int getBookSold(){return bookSold;}
 
 	private :
+	// Application of static variable
 		static double revenue;
 		static int bookSold;
 };
-
+// Instansiating static variable
 double BookShop::revenue;
 int BookShop::bookSold;
 
+// AdminCredentials class stores all the details realted to credentials that Admin need to edit the book shop records
+// Application of virtual functions and abstract class
 class AdminCredentials {
 	public :
 		AdminCredentials(string name, int pin) : name{name}, pin{pin}{}
@@ -33,29 +40,36 @@ class AdminCredentials {
 		int pin;
 };
 
+// Admin is the derived class of AdminCredentials that depicts individual identity of an Admin
+// Application of Inheritance
 class Admin : public AdminCredentials, public BookShop {
 	public :
+	// We don't want user to make an admin without any name or password, hence we deleted its default constructor
 		Admin() = delete;
 		Admin(string name,int pin) : AdminCredentials(name, pin){}
+	// Application of destructor
 		~Admin() {name = nullptr; pin = 0;}
 
 		void AdminMenu();
+	// Defining base class virtual functions in derived class
 		void updateName(string);
 		void updatePin(int);
 
 		static void viewBookShopAccount();
-
+	// constant function returning constant data type
 		string const getName() const {return this->name;}
 		int const getPin() const {return this->pin;};
 		void setPin(int pin) {this->pin = pin;}
 };
 
+// Book class is derived from BookShop class and has all the nessary functions and variables that inidividual book need 
+// Application of Inheritance
 class Book : public BookShop {
 	public:	
 		Book() : author{new char[MAX_LENGTH]}, title{new char[MAX_LENGTH]}, publisher{new char[MAX_LENGTH]}{}
 		Book(char* title, char* author, char* publisher, double price, int stock) : title{title}, author{author}, publisher{publisher}, price{price}, stock{stock}{}
 
-		void enterBooks();
+		void enterBooks();	
 		void editBook();
 		void buyBook();
 		void showData() const;
@@ -63,10 +77,12 @@ class Book : public BookShop {
 		static void printBooks(const vector<Book>&);
 		static int search(const vector<Book>&,char*,char*);
 		static bool deleteBook(vector<Book>&,int);
-
+	
+	// Application of friend function and operator overloading
 		friend ostream& operator << (ostream&,const Book&);
 		friend istream& operator >> (istream&,Book&);
 
+	// Application of getters and setters
 		const char* getTitle() {return title;}
 		const char* getAuthor() {return author;}
 		const char* getPublisher() {return publisher;}
@@ -112,6 +128,7 @@ int Book::search( const vector<Book>& books, char* tbuy,char* abuy)	{
 	return -1;	
 }
 
+// Enter New Books to the record
 void Book::enterBooks()	{
 	cin.ignore();
 	cout<<"Enter Title Name: ";       
@@ -126,6 +143,7 @@ void Book::enterBooks()	{
 	cin>>this->stock;   
 }
 
+// Edit any book within the book shop record
 void Book::editBook()	{
 	int choice;
 	cout << "\n--------------------------------------------------------\n";
@@ -138,6 +156,7 @@ void Book::editBook()	{
 	cout << "\n--------------------------------------------------------\n";
 	cout << "Enter your choice --> ";
 	cin >> choice;
+	// To clear input buffer we use cin.ignore()
 	cin.ignore();
 	switch (choice) {
 		case 1:{
@@ -187,6 +206,7 @@ void Book::showData() const{
 	cout << "-----------------------------------------" << endl;
 }
 
+// Function that Implements the functionality of Buying a book from the shop and printing the bill
 void Book::buyBook()	{
 	int count;
 	cout<<"\nEnter Number Of Books to buy: ";
@@ -200,10 +220,12 @@ void Book::buyBook()	{
 	}else	cout<<"\n!! Required Copies not in Stock !!" << endl;
 }
 
+// Function that implements the functionality of deleting a book within the system
 bool Book::deleteBook(vector<Book> &books, int index) {
 	if(index == books.size()-1) {
 		books.pop_back();
 	}else if (index >= 0 && index < books.size()){
+		// before deleting any book we need to shift the records first
 		for(int i = index; i < books.size(); i++) {
 			books[i] = books[i+1];
 		}	
@@ -214,6 +236,7 @@ bool Book::deleteBook(vector<Book> &books, int index) {
 	return true;
 }
 
+// Print all the books currently present in the system
 void Book::printBooks(const vector<Book> &books) {
 	if(books.size() > 0) {
 		cout << "**************************************************************************************************" << endl;
@@ -234,14 +257,17 @@ void Book::printBooks(const vector<Book> &books) {
 	}
 }
 
+// Setting of name of admin credential
 void Admin::updateName(string name) {
 	this->name = name;
 }
 
+// Setting of pin of admin credential
 void Admin::updatePin(int pin) {
 	this->pin = pin;
 }
 
+// Function implementing Admin Menu functionality
 void Admin::AdminMenu() {
 	int choice{0};
 	bool inLoop{true};
@@ -286,6 +312,7 @@ void Admin::AdminMenu() {
 	}
 }
 
+// Function showing current details of book shop
 void Admin::viewBookShopAccount() {
 	cout << "\n--------------------------------------------------------\n";
 	cout << "\nTotal Revenue of Book Shop : Rs." << getRevenue();
@@ -294,7 +321,10 @@ void Admin::viewBookShopAccount() {
 }
 
 int main()	{
+	// Making one Admin by default : Starting of code
 	Admin A((char*)"Divyanshu Tyagi", 123);
+	
+	// Initializing book vector with some records just to easy the implementation and testing
 	vector<Book> B {
 		Book((char*)"Eloquent JavaScript, Second Edition", (char*)"Marijn Haverbeke", (char*)"No Starch Press", 45.91, 3),
         Book((char*)"Anna Karenina", (char*)"Tolstoy", (char*)"Harcourt Brace", 13.5, 4),
@@ -307,8 +337,13 @@ int main()	{
         Book((char*)"The Hours", (char*)"Cunnningham",(char*) "Harcourt Brace", 12.35, 2),
         Book((char*)"Huckleberry Finn", (char*)"Twain",(char*) "Penguin", 5.76, 6)
 	};
+
+	// Un-comment the code below and comment the one above if we want to start from scratch 
     // vector<Book> B;
+
 	char titlebuy[MAX_LENGTH],authorbuy[MAX_LENGTH];
+
+	// Main infinite loop of book Shop
 	while(1)	{
 		char choice;
 		cout << "\n--------------------------------------------------------\n";
