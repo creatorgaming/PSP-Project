@@ -1,3 +1,6 @@
+// Copyright 2021 
+// Author: Divyanshu Tyagi
+
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
