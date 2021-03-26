@@ -1,6 +1,14 @@
-// Copyright 2021 
-// Author: Divyanshu Tyagi
-
+/* 
+Copyright 2021 
+Author: Divyanshu Tyagi
+Project Name : Book-Shop
+Project Description : This Project manages and fulfils basic functionality of a Book Shop Book Buying System as a real world example. It covers basic functionality of 
+Adding, Deleting, Editing, Buying, Printing of books within the database. For keep functionality basic i have not used file handing or any other external database to store
+the record of the books, to keep it simple i have used STL and primitive datatypes such as Vectors and Array to store and retreive the information. Also, i have implemented 
+Admin Panal functionality at very basic level i.e there can be multiple admin in the system and each has its own password and username. There is lot of scope of improvment 
+in the current features of the project also many more features can be added such as:- customer side and its record management, improvement in security and functionality of 
+Admin panal, also linking it to external database to increase the number of records that can be stored in the system etc. 
+*/
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
